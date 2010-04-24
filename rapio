@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+use strict;
+# radio 
+use Getopt::Std;
+
+my $file = "$ENV{HOME}/.config/rapio/channels";
+
+my $c_bold = "\033[1m";
+my $c_normal = "\033[0m";
+my $c_one = "\033[1;31m";
+my $c_two = "\033[1;32m";
+
+my $station;
+# -dumpstream, -dumpaudio might be useful
+my $external = "mplayer -really-quiet -cache 100 -slave". 
+               " -input file=/home/scp1/.mplayer/fifo";
+our($opt_s);
+getopts('s:');
+
+my %radiostations = ();
+open(STATIONS, $file) or die "Could not open $file: $!\n";
+while(<STATIONS>) {
+  chomp;
+  my ($key,$value) = split /\s+/;
+  $radiostations{$key} .= exists $radiostations{$key} ? "$value" : $value;
+}
+close($file);
+
+if($opt_s) {
+  $station = $radiostations{$opt_s};
+  system("$external $station ");
+}
+
+else {
+  &help;
+}
+
+sub help {
+  print "Usage: $0 -s <channel>\n\n";
+  printf("%17s %5s\n", "Channel", "URL");
+  foreach my $key(sort(keys(%radiostations))) {
+    printf("%17s %s\n", $key, $radiostations{$key});
+  }
+  exit 0;
+}
