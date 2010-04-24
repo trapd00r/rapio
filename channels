@@ -11,12 +11,17 @@ breaks http://www.di.fm/mp3/breaks.pls
 gabber http://www.di.fm/mp3/gabber.pls
 bebop http://www.sky.fm/mp3/bebop.pls
 rap http://www.sky.fm/mp3/classicrap.pls
-P1 mms://wm-live.sr.se/SR-P1-High
-P2 mms://wm-live.sr.se/SR-P2-High
-P3 mms://wm-live.sr.se/SR-P3-High
-P4 mms://wm-live.sr.se/SR-Radiosporten-High
-P3-Dingata mms://wm-live.sr.se/sr-dingata-high
-P3-Street mms://wm-live.sr.se/SR-P3Street-High
+P1 http://sverigesradio.se/topsy/direkt/132-hi.mp3
+P2 http://sverigesradio.se/topsy/direkt/163-hi.mp3
+P3 http://sverigesradio.se/topsy/direkt/164-hi.mp3
+P4 http://sverigesradio.se/topsy/direkt/179-hi.mp3
+Metropol http://sverigesradio.se/topsy/direkt/2842-hi.mp3
+Rockster http://sverigesradio.se/topsy/direkt/1604-hi.mp3
+Star http://sverigesradio.se/topsy/direkt/1607-hi.mp3
+Street http://sverigesradio.se/topsy/direkt/1606-hi.mp3
+Svea http://sverigesradio.se/topsy/direkt/1605-hi.mp3
+DinGata http://sverigesradio.se/topsy/direkt/2576-hi.mp3
 Mixmegapol mms://live.alleredge.com/AE_MixMegapol_Mid
 Voice mms://live.alleredge.com/AE_TheVoiceSE_Mid
 psy2 http://streamer.psyradio.org:8030/listen.pls
+
