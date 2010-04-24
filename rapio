@@ -10,6 +10,7 @@ open(my $fh, '<', $stationsFile) or die "Cant open $stationsFile: $!";
 while(<$fh>) {
   chomp;
   my ($name,$url) = split/\s+/;
+  $name = lc($name);
   $radioStations{$name} .= exists $radioStations{$name} ? "$url" : $url;
 }
 close $stationsFile;
@@ -21,7 +22,7 @@ if(!$choice) {
   $choice = <STDIN>;
   chomp($choice);
 }
-system("$command $radioStations{$choice}") or die;
+system("$command $radioStations{$choice}") == 0 or die;
 
 sub usage {
   print << "USAGE";
