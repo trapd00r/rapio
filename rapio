@@ -3,7 +3,7 @@
 use strict;
 
 my $stationsFile = "$ENV{HOME}/.config/rapio/channels";
-my $command = "mplayer -cache 100";
+my $command = "mplayer -cache 200 -slave -input file=\$HOME/.mplayer/fifo";
 
 my %radioStations;
 open(my $fh, '<', $stationsFile) or die "Cant open $stationsFile: $!";
