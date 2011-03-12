@@ -1,37 +1,57 @@
 #!/usr/bin/perl
-# rapio
 use strict;
+use vars($VERSION);
+$VERSION = '1.002';
 
-my $stationsFile = "$ENV{HOME}/.config/rapio/channels";
-my $command = "mplayer -cache 200 -slave -input file=\$HOME/.mplayer/fifo";
+use Daemon::Mplayer qw(mplayer_play mplayer_stop);
 
-my %radioStations;
-open(my $fh, '<', $stationsFile) or die "Cant open $stationsFile: $!";
-while(<$fh>) {
-  chomp;
-  my ($name,$url) = split/\s+/;
+if($ARGV[0] =~ m{-?-?k(?:ill)?}) {
+  mplayer_stop(
+    {
+      pidfile => '/tmp/rapio.pid',
+    }
+  );
+  exit;
+}
+
+
+my $stations = do {
+  -f "$ENV{HOME}/.local/share/rapio/channels"
+    ? "$ENV{HOME}/.local/share/rapio/channels"
+    : -f './channels'
+      ? './channels'
+      : die("No channel file found!\n");
+};
+
+
+open(my $fh, '<', $stations) or die("Cant open $stations: $!\n");
+
+my %channels = ();
+while(my $r = <$fh>) {
+  chomp($r);
+  my($name, $url) = split(/\s+/, $r);
   $name = lc($name);
-  $radioStations{$name} .= exists $radioStations{$name} ? "$url" : $url;
+  $channels{$name} .= exists($channels{ $name }) ? "$url" : $url;
 }
-close $stationsFile;
 
-my $choice = shift;
-if(!$choice) {
-  usage();
-  print "Station: ";
-  $choice = <STDIN>;
-  chomp($choice);
+for my $s(sort(keys(%channels))) {
+  printf("%s\n", $s);
 }
-system("$command $radioStations{$choice}") == 0 or die;
 
-sub usage {
-  print << "USAGE";
-  USAGE
-    $0 <station>
+print "> ";
+chomp(my $choice = <>);
 
-USAGE
+if(exists( $channels{ $choice } )) {
 
-  foreach my $name(sort(keys(%radioStations))) {
-    printf("%20s %s\n", $name, $radioStations{$name});
-  }
+  mplayer_play(
+    {
+      pidfile => '/tmp/rapio.pid',
+      logfile => '/dev/null',
+      path    => '/usr/bin/mplayer',
+      args    => [ qw(-cache 200), $channels{ $choice } ],
+    }
+  );
+}
+else {
+  die("No such channel '$choice'\n");
 }
